@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAMPZZ BYPASSER</title>
+    <!-- Carga de Tailwind CSS para el diseño -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos generales */
+        :root {
+            --primary-color: #00ffc8; /* Verde/Cian vibrante */
+            --secondary-color: #ff0077; /* Rosa/Magenta vibrante */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            overflow-y: scroll; /* Asegura que el scroll funcione */
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Contenedor de la animación de fondo */
+        #background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Estilo para los puntos de la animación */
+        .dot {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+
+        /* Animación de los puntos cayendo */
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Estilo para el rastro del cursor */
+        #cursor-trail {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 192, 255, 0.7); /* Azul vibrante */
+            pointer-events: none;
+            transition: transform 0.1s ease-out, opacity 0.5s ease-out;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 9999;
+        }
+
+        /* Animación RGB para el texto del título (Estilo XENO) */
+        .animated-heading {
+            background: linear-gradient(90deg, #ff0077, #00ffc8, #ff0077, #00ffc8);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 5s ease infinite;
+            display: inline-block;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Estilos específicos para los bordes animados de las tarjetas */
+        .feature-card {
+            position: relative;
+            z-index: 10;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(90deg, #ff0077, #ff9900, #00ffc8, #ff0077);
+            background-size: 400% 400%;
+            z-index: -1;
+            border-radius: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .feature-card:hover::before {
+            opacity: 1;
+            animation: border-shift 4s linear infinite;
+        }
+
+        @keyframes border-shift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Ajuste de color del contenido de la tarjeta */
+        .feature-card-content {
+            background-color: #2b2b2b;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            height: 100%;
+        }
+
+        /* Estilo para el botón principal (animación) */
+        #decode-button {
+            transition: all 0.2s ease-in-out;
+        }
+        #decode-button:hover {
+            box-shadow: 0 0 20px var(--primary-color);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Contenedor de la animación de fondo -->
+    <div id="background-animation"></div>
+
+    <!-- Rastro del cursor -->
+    <div id="cursor-trail"></div>
+
+    <!-- Contenedor principal de la aplicación -->
+    <div id="app-container" class="relative z-20 flex flex-col items-center p-4 md:p-8 min-h-screen">
+
+        <!-- Header y Título Animado -->
+        <header class="text-center mb-12 mt-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">
+                THE #1 
+                <span class="animated-heading">VAMPZZ BYPASSER</span>
+                !
+            </h1>
+        </header>
+
+        <!-- Tarjeta de Entrada y Botones -->
+        <main class="w-full max-w-lg">
+            <div class="bg-gray-700/50 p-6 rounded-xl shadow-2xl backdrop-blur-sm">
+
+                <!-- Área de texto (Input) -->
+                <input id="input-url" type="text" placeholder="Enter your link here"
+                       class="w-full p-4 mb-6 text-lg rounded-lg bg-gray-900 border border-gray-600 text-white focus:ring-2 focus:ring-primary-color focus:border-primary-color transition duration-300">
+
+                <!-- Botón de Acción Principal -->
+                <button id="decode-button"
+                        class="w-full py-4 text-xl font-bold rounded-lg bg-gray-600 hover:bg-gray-700 text-white shadow-lg transition duration-300
+                                bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 border border-gray-500">
+                    BYPASS LINK
+                </button>
+
+                <!-- Área de resultado (Output) -->
+                <div id="output-area" class="mt-6 p-4 bg-gray-800 rounded-lg hidden">
+                    <p class="text-sm font-semibold mb-2 text-primary-color">Processed Result:</p>
+                    <p id="output-result" class="break-words text-white"></p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mensaje de estado/error -->
+        <div id="message-box" class="mt-4 p-3 rounded-lg text-center hidden" role="alert"></div>
+
+        <!-- Botón flotante para Pegar Enlace -->
+        <button id="paste-button"
+                class="fixed bottom-8 right-8 bg-primary-color text-gray-900 p-4 rounded-full shadow-2xl text-lg font-bold
+                       hover:bg-opacity-90 transition transform hover:scale-105 z-50">
+            Paste Link
+        </button>
+
+        <!-- Separador y Título de Características -->
+        <div class="mt-20 w-full max-w-5xl text-center">
+            <h2 class="text-2xl font-semibold mb-8 text-white">Some of our statistics ❤️</h2>
+        </div>
+
+        <!-- Sección de Estadísticas/Características (3 Tarjetas) -->
+        <section class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+
+            <!-- Tarjeta 1: Free -->
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <div class="text-3xl mb-3">💯 100% Free</div>
+                    <p class="text-gray-400 mb-4">Our website is completely free to use, ensuring you can access all features without any cost.</p>
+                    <p class="text-sm text-gray-500">Enjoy unlimited access without hidden fees or subscriptions required!</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2: Secure Processing -->
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <div class="text-3xl mb-3">🌐 Secure Processing</div>
+                    <p class="text-gray-400 mb-4">We securely handle a wide range of URL types, from simple addresses to complex encoded strings.</p>
+                    <p class="text-sm text-gray-500">Your data is processed locally in your browser for maximum security and speed.</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3: Fast & Reliable -->
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <div class="text-3xl mb-3">🚀 Fast & Reliable</div>
+                    <p class="text-gray-400 mb-4">Process links instantly with our advanced system!</p>
+                    <p class="text-sm text-gray-500">Our custom coded script provides lightning-fast URL decoding on multiple link structures.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Espacio para asegurar el scroll -->
+        <div class="h-16"></div>
+
+        <!-- Pie de página (Privacy & Support) -->
+        <footer class="w-full max-w-5xl mt-auto pt-8 border-t border-gray-700 text-center text-sm text-gray-500">
+            <h3 class="text-lg font-semibold text-white mb-3">Privacy & Support</h3>
+            <p class="mb-2">
+                <span class="font-bold text-primary-color">Privacy Policy:</span>
+                We value your privacy. This application is designed to process links locally on your device. We DO NOT collect, store, or transmit any user input or personal data.
+            </p>
+            <p class="mb-4">
+                <span class="font-bold text-primary-color">Support:</span>
+                If you have any questions or need assistance, please contact us via WhatsApp:
+                <a href="https://wa.me/34604905242" target="_blank" class="text-secondary-color hover:underline">+34 604 905 242</a>
+            </p>
+            <p class="mt-6 pb-4">
+                &copy; 2024 VAMPZZ BYPASSER. All rights reserved.
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- Canvas para la animación de la Tierra -->
+    <canvas id="earth-canvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Configuración de la animación de puntos cayendo
+        const bgAnimation = document.getElementById('background-animation');
+        const numDots = 50;
+
+        function createDot() {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+
+            const size = Math.random() * 5 + 2; // Tamaño entre 2px y 7px
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+
+            const startX = Math.random() * 100; // Posición horizontal aleatoria
+            dot.style.left = `${startX}vw`;
+
+            const duration = Math.random() * 10 + 5; // Duración entre 5s y 15s
+            dot.style.animationDuration = `${duration}s`;
+
+            const delay = Math.random() * 10; // Retraso de inicio
+            dot.style.animationDelay = `${delay}s`;
+
+            bgAnimation.appendChild(dot);
+
+            // Eliminar el punto después de que termine la animación
+            dot.addEventListener('animationend', () => {
+                dot.remove();
+                createDot(); // Reemplazar el punto eliminado
+            });
+        }
+
+        // Crear los puntos iniciales
+        for (let i = 0; i < numDots; i++) {
+            createDot();
+        }
+
+        // Configuración del rastro del cursor
+        const cursorTrail = document.getElementById('cursor-trail');
+        let cursorX = 0, cursorY = 0;
+        let isMoving = false;
+
+        document.addEventListener('mousemove', (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+
+            if (!isMoving) {
+                isMoving = true;
+                // Mostrar el cursor al moverse
+                cursorTrail.style.opacity = 1;
+                cursorTrail.style.transform = 'translate(-50%, -50%) scale(1)';
+                requestAnimationFrame(updateCursorTrail);
+            }
+        });
+
+        // Ocultar el rastro después de un breve periodo de inactividad
+        let timeout;
+        document.addEventListener('mousemove', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                isMoving = false;
+                cursorTrail.style.opacity = 0;
+                cursorTrail.style.transform = 'translate(-50%, -50%) scale(0)';
+            }, 500);
+        });
+
+        function updateCursorTrail() {
+            if (isMoving) {
+                cursorTrail.style.left = `${cursorX}px`;
+                cursorTrail.style.top = `${cursorY}px`;
+                requestAnimationFrame(updateCursorTrail);
+            }
+        }
+
+        // --- LÓGICA DE LA APLICACIÓN ---
+
+        const inputUrl = document.getElementById('input-url');
+        const outputArea = document.getElementById('output-area');
+        const outputResult = document.getElementById('output-result');
+        const messageBox = document.getElementById('message-box');
+        const decodeButton = document.getElementById('decode-button'); // ID corregido
+        const pasteButton = document.getElementById('paste-button');
+
+        // Función para mostrar mensajes de estado
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.classList.remove('hidden', 'bg-red-900', 'bg-green-900');
+            messageBox.classList.add(isError ? 'bg-red-900' : 'bg-green-900');
+            outputArea.classList.add('hidden');
+        }
+
+        // Lógica de decodificación segura
+        decodeButton.addEventListener('click', () => {
+            const url = inputUrl.value.trim();
+
+            if (!url) {
+                showMessage("Error: Please enter a link to bypass.", true);
+                return;
+            }
+
+            let bypassedUrl;
+
+            if (url.includes('linkvertise.com')) {
+                bypassedUrl = url.replace('linkvertise.com', 'linkvertise.lol');
+            } else if (url.includes('adf.ly')) {
+                bypassedUrl = url.replace('adf.ly', 'adfly.to');
+            } else if (url.includes('linkversite.com')) {
+                bypassedUrl = url.replace('linkversite.com', 'linkversite.lol');
+            } else if (url.includes('ouo.io')) {
+                bypassedUrl = url.replace('ouo.io', 'ouo.press');
+            } else if (url.includes('tinyurl.com')) {
+                bypassedUrl = url.replace('tinyurl.com', 'tinyurl.gg');
+            } else {
+                bypassedUrl = 'Service not supported';
+            }
+
+            outputResult.textContent = bypassedUrl;
+            outputArea.classList.remove('hidden');
+            showMessage("Link successfully bypassed!", false);
+        });
+
+        // Lógica del botón Pegar
+        pasteButton.addEventListener('click', async () => {
+            try {
+                // navigator.clipboard.readText() requiere permisos seguros (HTTPS o localhost)
+                const text = await navigator.clipboard.readText();
+                inputUrl.value = text;
+                showMessage("Link pasted successfully!", false);
+            } catch (err) {
+                // En caso de que no funcione navigator.clipboard (por permisos de iFrame)
+                showMessage("Error: Automatic paste failed. Please paste the link manually into the box.", true);
+                console.error('Failed to read clipboard contents: ', err);
+            }
+        });
+
+        // Configuración de Three.js para la animación de la Tierra
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('earth-canvas') });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Cargar texturas
+        const earthTexture = new THREE.TextureLoader().load('path/to/earth_texture.jpg');
+        const cloudTexture = new THREE.TextureLoader().load('path/to/cloud_texture.png');
+
+        // Crear la geometría y materiales
+        const earthGeometry = new THREE.SphereGeometry(5, 32, 32);
+        const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+
+        const cloudGeometry = new THREE.SphereGeometry(5.2, 32, 32);
+        const cloudMaterial = new THREE.MeshPhongMaterial({ map: cloudTexture, transparent: true });
+        const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+
+        // Añadir objetos a la escena
+        scene.add(earth);
+        scene.add(clouds);
+
+        // Añadir iluminación
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Posicionar la cámara
+        camera.position.z = 15;
+
+        // Animación de rotación
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.005;
+            clouds.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
